@@ -65,6 +65,31 @@ class ViewController: UIViewController {
             locationSemiText = locationText
             locationLabel.text = "\(locationSemiText)"
             displayLink.invalidate() // Must invalidate displayLink else runLoop wouldn't stop.
+            beginHiding()
+        }
+    }
+    
+    //start animating the text backward & hide
+    func beginHiding(){
+        let displayLinkHide = CADisplayLink(target: self, selector: #selector(handleDisplayLinkHide))
+        displayLinkHide.preferredFramesPerSecond = 4 // This value will decide the speed of typing on screen
+        displayLinkHide.add(to: .current, forMode: .default)
+    }
+    
+    @objc func handleDisplayLinkHide(_ displayLink: CADisplayLink) {
+        
+        if locationSemiText.count <= locationText.count && characterIndex != 0 {
+            locationSemiText.removeLast()
+            locationLabel.text = "\(locationSemiText)|"
+            characterIndex -= 1
+        }else {
+            displayLink.invalidate() // Must invalidate displayLink else runLoop wouldn't stop.
+            if stringIndex == (locationsTextArray.count - 1) {
+                stringIndex = 0
+            }else {
+                stringIndex += 1
+            }
+            beginTyping()
         }
     }
 }
