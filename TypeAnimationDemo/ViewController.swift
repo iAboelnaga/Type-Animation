@@ -8,11 +8,11 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     //lable to display locations
     let locationLabel: UILabel = {
         let label = UILabel()
-        label.text = "fhgfhfdhjhgjhgf"
+        label.text = ""
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
@@ -38,11 +38,34 @@ class ViewController: UIViewController {
         
         view.addSubview(locationLabel)
         locationLabel.frame = view.frame
+        
+        beginTyping()
     }
     
     //change to next location name
     func changeLocationName(){
         self.locationText = locationsTextArray[stringIndex]
+    }
+    
+    //start animating the text forward & reveal
+    func beginTyping () {
+        characterIndex = 0
+        locationSemiText = ""
+        let displayLink = CADisplayLink(target: self, selector: #selector(handleDisplayLink))
+        displayLink.preferredFramesPerSecond = 4 // This value will decide the speed of typing on screen
+        displayLink.add(to: .current, forMode: .default)
+    }
+    
+    @objc func handleDisplayLink(_ displayLink: CADisplayLink) {
+        if locationSemiText.count < locationText.count {
+            locationSemiText.append( locationText[locationSemiText.endIndex] )
+            locationLabel.text = "\(locationSemiText)|"
+            characterIndex += 1
+        }else {
+            locationSemiText = locationText
+            locationLabel.text = "\(locationSemiText)"
+            displayLink.invalidate() // Must invalidate displayLink else runLoop wouldn't stop.
+        }
     }
 }
 
