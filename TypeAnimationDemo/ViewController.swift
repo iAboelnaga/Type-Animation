@@ -15,7 +15,7 @@ class ViewController: UIViewController {
         label.text = ""
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.backgroundColor = .secondarySystemBackground
         label.textColor = .systemIndigo
         return label
